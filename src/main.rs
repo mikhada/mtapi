@@ -44,23 +44,67 @@ async fn main() {
     }
 
     match args[1].as_str() {
-        "playerlist" => {
+        // GET calls
+        "pcount" => {
+            let json = apiget::player_count(&ctx).await.unwrap();
+            println!("{}", json); // raw JSON, no pretty print
+        }
+
+        "players" => {
             let json = apiget::player_list(&ctx).await.unwrap();
             println!("{}", json); // raw JSON, no pretty print
         }
 
-        "playerban" => {
-            if args.len() < 3 {
-                eprintln!("Usage: mtapi playerban <unique_id>");
-                std::process::exit(1);
-            }
-            let json = apipost::ban_player(&ctx, &args[2]).await.unwrap();
-            println!("{}", json); // raw JSON
+        "housing" => {
+            let json = apiget::housing_list(&ctx).await.unwrap();
+            println!("{}", json); // raw JSON, no pretty print
+        }
+
+        "banlist" => {
+            let json = apiget::player_banlist(&ctx).await.unwrap();
+            println!("{}", json); // raw JSON, no pretty print
         }
 
         "version" => {
             let json = apiget::version(&ctx).await.unwrap();
             println!("{}", json);
+        }
+
+        // POST calls
+        "chat" => {
+            if args.len() < 3 {
+                eprintln!("Usage: mtapi chat '<message>'");
+                std::process::exit(12);
+            }
+            let json = apipost::chat(&ctx, &args[2]).await.unwrap();
+            println!("{}", json); // raw JSON
+        }
+
+        "kick" => {
+            if args.len() < 3 {
+                eprintln!("Usage: mtapi kick <unique_id>");
+                std::process::exit(12);
+            }
+            let json = apipost::player_kick(&ctx, &args[2]).await.unwrap();
+            println!("{}", json); // raw JSON
+        }
+
+        "ban" => {
+            if args.len() < 3 {
+                eprintln!("Usage: mtapi ban <unique_id>");
+                std::process::exit(12);
+            }
+            let json = apipost::player_ban(&ctx, &args[2]).await.unwrap();
+            println!("{}", json); // raw JSON
+        }
+
+        "unban" => {
+            if args.len() < 3 {
+                eprintln!("Usage: mtapi unban <unique_id>");
+                std::process::exit(12);
+            }
+            let json = apipost::player_unban(&ctx, &args[2]).await.unwrap();
+            println!("{}", json); // raw JSON
         }
 
         _ => {
