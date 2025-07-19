@@ -45,22 +45,22 @@ async fn main() {
 
     match args[1].as_str() {
         // GET calls
-        "pcount" => {
+        "count" => {
             let json = apiget::player_count(&ctx).await.unwrap();
             println!("{}", json); // raw JSON, no pretty print
         }
 
-        "players" => {
+        "players" | "list" | "plist" => {
             let json = apiget::player_list(&ctx).await.unwrap();
             println!("{}", json); // raw JSON, no pretty print
         }
 
-        "housing" => {
+        "housing" | "houses" | "hlist" => {
             let json = apiget::housing_list(&ctx).await.unwrap();
             println!("{}", json); // raw JSON, no pretty print
         }
 
-        "banlist" => {
+        "banlist" | "blist"  => {
             let json = apiget::player_banlist(&ctx).await.unwrap();
             println!("{}", json); // raw JSON, no pretty print
         }
@@ -71,7 +71,7 @@ async fn main() {
         }
 
         // POST calls
-        "chat" => {
+        "chat" | "message" | "msg" | "send" => {
             if args.len() < 3 {
                 eprintln!("Usage: mtapi chat '<message>'");
                 std::process::exit(12);
@@ -98,7 +98,7 @@ async fn main() {
             println!("{}", json); // raw JSON
         }
 
-        "unban" => {
+        "deban" | "unban" => {
             if args.len() < 3 {
                 eprintln!("Usage: mtapi unban <unique_id>");
                 std::process::exit(12);
