@@ -37,13 +37,20 @@ pub async fn player_kick(ctx: &ApiContext, unique_id: &str) -> Result<Value, req
     api_post(ctx, &url).await
 }
 
-pub async fn player_ban(ctx: &ApiContext, unique_id: &str) -> Result<Value, reqwest::Error> {
-    let url = format!(
+pub async fn player_ban(ctx: &ApiContext, unique_id: &str, hours: Option<u32>, reason: Option<&str>) -> Result<Value, reqwest::Error> {
+    let mut url = format!(
         "{}/player/ban?password={}&unique_id={}",
         ctx.base_url,
         encode(&ctx.password),
         encode(unique_id)
     );
+    if let Some(h) = hours {
+        url.push_str(&format!("&hours={}", h));
+    }
+    if let Some(r) = reason {
+        url.push_str("&reason=");
+        url.push_str(&encode(r));
+    }
     api_post(ctx, &url).await
 }
 

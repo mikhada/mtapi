@@ -77,7 +77,7 @@ async fn main() {
                 std::process::exit(12);
             }
             let json = apipost::chat(&ctx, &args[2]).await.unwrap();
-            println!("{}", json); // raw JSON
+            println!("{}", json);
         }
 
         "kick" => {
@@ -86,16 +86,20 @@ async fn main() {
                 std::process::exit(12);
             }
             let json = apipost::player_kick(&ctx, &args[2]).await.unwrap();
-            println!("{}", json); // raw JSON
+            println!("{}", json);
         }
 
         "ban" => {
             if args.len() < 3 {
-                eprintln!("Usage: mtapi ban <unique_id>");
+                eprintln!("Usage: mtapi ban <unique_id> [hours] [reason]");
                 std::process::exit(12);
             }
-            let json = apipost::player_ban(&ctx, &args[2]).await.unwrap();
-            println!("{}", json); // raw JSON
+            let unique_id = &args[2];
+            let hours = args.get(3).and_then(|h| h.parse::<u32>().ok());
+            let reason = args.get(4).map(|_r| args[4..].join(" "));
+
+            let json = apipost::player_ban(&ctx, unique_id, hours, reason.as_deref()).await.unwrap();
+            println!("{}", json);
         }
 
         "deban" | "unban" => {
@@ -104,7 +108,7 @@ async fn main() {
                 std::process::exit(12);
             }
             let json = apipost::player_unban(&ctx, &args[2]).await.unwrap();
-            println!("{}", json); // raw JSON
+            println!("{}", json);
         }
 
         _ => {
