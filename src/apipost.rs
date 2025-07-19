@@ -1,12 +1,23 @@
 use crate::ApiContext;
 use serde_json::Value;
+use urlencoding::encode;
+use reqwest::header::{HeaderMap, HeaderValue, CONTENT_LENGTH};
 
 pub async fn chat(ctx: &ApiContext, message: &str) -> Result<serde_json::Value, reqwest::Error> {
-    let url = format!("{}/chat?password={}", ctx.base_url, ctx.password);
+    let url = format!(
+        "{}/chat?password={}&message={}",
+        ctx.base_url,
+        encode(&ctx.password),
+        encode(message)
+    );
+
+    let mut headers = HeaderMap::new();
+    headers.insert(CONTENT_LENGTH, HeaderValue::from_static("0"));
+
     let res = ctx.client
         .post(&url)
-        .header("Content-Type", "application/x-www-form-urlencoded")
-        .body(format!("message={}", urlencoding::encode(message)))
+        .headers(headers)
+        .body("")
         .send()
         .await?;
 
