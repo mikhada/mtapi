@@ -120,7 +120,8 @@ async fn main() {
                 eprintln!("Usage: mtapi chat '<message>'");
                 std::process::exit(12);
             }
-            let json = apipost::chat(&ctx, &args.command_args[0]).await.unwrap();
+            let message = args.command_args.join(" ");
+            let json = apipost::chat(&ctx, &message).await.unwrap();
             print_output(json, args.raw);
         }
         "kick" => {
