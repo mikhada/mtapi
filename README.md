@@ -1,6 +1,8 @@
 # mtapi -- Motor Town API Interface
 #### Copyright 2025, Aaron Johnson (Github User: Mikhada)
 
+## Disclaimer: This is considered an "early access" project at the moment. If there are issues with updates, you may need to follow new installation instructions to reconcile as they may not be mentioned anywhere else.
+
 **mtapi** is a command-line tool written in Rust for interacting with a [Motor Town: Behind The Wheel](https://store.steampowered.com/app/1369670/Motor_Town_Behind_The_Wheel/) dedicated game server's web API, enabling server administrators to query server status, send messages, ban/unban players, and more.
 
 ## Features
@@ -26,9 +28,9 @@ By default, `mtapi` will look for a configuration file in one of two places:
 
 Example config file (also found in `mtapi_example.toml`):
 ```toml
-host = "http://127.0.0.1"
-port = 5055
-api_password = "yoursecret"
+host = "http://localhost"
+port = 8080
+api_password = "changeit"
 ```
 
 ## Usage
